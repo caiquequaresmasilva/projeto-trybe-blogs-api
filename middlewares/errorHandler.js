@@ -7,6 +7,7 @@ const statusByErrorCode = {
     'number.base': 422,
     'string.pattern.base': 400,
     'string.empty': 400,
+    invalidFields: 400,
   };
   
   module.exports = (error, _req, res, _next) => {
