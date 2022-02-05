@@ -8,8 +8,11 @@ const validateCategory = ({ name }) => {
 
 const create = async ({ name }) => Category.create({ name });
 
+const getAll = async () => Category.findAll();
+
 module.exports = {
   create,
   validateCategory,
+  getAll,
   
 };
