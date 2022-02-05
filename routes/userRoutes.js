@@ -5,5 +5,6 @@ const authValidation = require('../middlewares/authValidation');
 
 router.post('/', rescue(userController.validateUser), rescue(userController.create));
 router.get('/', rescue(authValidation), rescue(userController.getUsers));
+router.get('/:id', rescue(authValidation), rescue(userController.getUsers));
 
 module.exports = router;
