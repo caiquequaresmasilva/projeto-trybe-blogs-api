@@ -23,8 +23,16 @@ const login = async (req, res, next) => {
   res.status(200).json(loginToken);
 };
 
+const getUsers = async (req, res, next) => {
+  const { id } = req.params;
+  const users = await userService.getUsers(id);
+  if (users.error) next(users.error);
+  res.status(200).json(users);
+};
+
 module.exports = {
   create,
   validateUser,
   login,
+  getUsers,
 };

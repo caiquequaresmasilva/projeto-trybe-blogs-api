@@ -8,6 +8,7 @@ const statusByErrorCode = {
     'string.pattern.base': 400,
     'string.empty': 400,
     invalidFields: 400,
+    unauthorized: 401,
   };
   
   module.exports = (error, _req, res, _next) => {

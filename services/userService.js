@@ -2,12 +2,24 @@ const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 const userSchema = require('../schemas/userSchema');
 
+const { JWT_SECRET } = process.env;
+
 const validateUser = ({ displayName, email, password }) => {
   const validation = userSchema.validate({ displayName, email, password });
   return validation;
 };
 
-const generateToken = (payload) => jwt.sign(payload, process.env.JWT_SECRET, {
+const authValidation = (token) => {
+  if (!token) return { error: { code: 'unauthorized', message: 'Token not found' } };
+  try {
+    const user = jwt.verify(token, JWT_SECRET);
+    return user;
+  } catch (_) {
+    return { error: { code: 'unauthorized', message: 'Expired or invalid token' } };
+  }
+};
+
+const generateToken = (payload) => jwt.sign(payload, JWT_SECRET, {
   algorithm: 'HS256',
   expiresIn: '1d',
 });
@@ -22,6 +34,14 @@ const create = async ({ displayName, email, password, image }) => {
   const token = generateToken(userCreated);
 
   return { token };
+};
+
+const getUsers = async (id = null) => {
+  if (id) {
+    const user = await User.findByPk(id);
+    return user || { error: { code: 'notFound', message: 'User does not exist' } };
+  }
+  return User.findAll();
 };
 
 const login = async ({ email, password }) => {
@@ -39,4 +59,6 @@ module.exports = {
   create,
   validateUser,
   login,
+  authValidation,
+  getUsers,
 };
