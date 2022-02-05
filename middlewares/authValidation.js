@@ -7,6 +7,7 @@ module.exports = async (req, _res, next) => {
     const { authorization } = req.headers;
     const validation = userService.authValidation(authorization);
     if (validation.error) return next(validation.error);
+    req.userId = validation.id;
   }
   next();
 };

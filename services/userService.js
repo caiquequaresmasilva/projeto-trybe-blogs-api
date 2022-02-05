@@ -50,7 +50,7 @@ const login = async ({ email, password }) => {
     return { error: { code: 'invalidFields', message: 'Invalid fields' } }; 
   } 
 
-  const token = generateToken({ email });
+  const token = generateToken({ email, id: user.id });
 
   return { token };
 };

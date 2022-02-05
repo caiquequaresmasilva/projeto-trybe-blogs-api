@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 
 const { errorHandler, authValidation } = require('./middlewares');
 
-const { rootRoutes, categoryRoutes, userRoutes } = require('./routes');
+const { rootRoutes, categoryRoutes, userRoutes, postRoutes } = require('./routes');
 
 app.use(bodyParser.json());
 app.use(authValidation);
@@ -11,6 +11,7 @@ app.use(authValidation);
 app.use('/', rootRoutes);
 app.use('/user', userRoutes);
 app.use('/categories', categoryRoutes);
+app.use('/post', postRoutes);
 
 app.use(errorHandler);
 

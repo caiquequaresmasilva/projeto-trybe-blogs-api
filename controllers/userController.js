@@ -24,6 +24,7 @@ const login = async (req, res, next) => {
 };
 
 const getUsers = async (req, res, next) => {
+  console.log(req.userId);
   const { id } = req.params;
   const users = await userService.getUsers(id);
   if (users.error) return next(users.error);
