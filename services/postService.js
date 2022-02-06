@@ -52,8 +52,24 @@ const getPosts = async (id) => {
   });
 };
 
+const update = async ({ id, title, content, categoryIds, userId }) => {
+  if (categoryIds) { 
+    return { error: { code: 'invalidFields', message: 'Categories cannot be edited' } }; 
+  }
+  const [updatePost] = await BlogPost.update({ title, content }, { where: { id, userId } });
+  if (!updatePost) { 
+    return { error: { code: 'unauthorized', message: 'Unauthorized user' } }; 
+  }
+  return BlogPost.findOne({
+    where: { id },
+    attributes: ['title', 'content', 'userId'],
+    include: [{ model: Category, as: 'categories', through: { attributes: [] } }],
+  });
+};
+
 module.exports = {
   create,
   validatePost,
   getPosts,
+  update,
 };

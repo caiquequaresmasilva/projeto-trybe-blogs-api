@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const EMAIL_PATTERN = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
+const EMAIL_PATTERN = /^[a-zA-Z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/;
 const PASSWORD_PATTERN = /^\w{6}$/;
 
 module.exports = Joi.object({

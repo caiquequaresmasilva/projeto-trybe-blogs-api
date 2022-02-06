@@ -2,7 +2,12 @@ const postService = require('../services/postService');
 
 const validatePost = (req, _res, next) => {
   const { title, content, categoryIds } = req.body;
-  const validation = postService.validatePost({ title, content, categoryIds });
+  const { method } = req;
+  const validation = postService.validatePost({ 
+    title, 
+    content, 
+    categoryIds: method === 'PUT' ? [] : categoryIds,
+  });
   if (validation.error) return next(validation.error);
   next();
 };
@@ -22,8 +27,16 @@ const getPosts = async (req, res, next) => {
   res.status(200).json(posts);
 };
 
+const update = async (req, res, next) => {
+  const { params: { id }, body: { title, content, categoryIds }, userId } = req;
+  const updatePost = await postService.update({ id, title, content, categoryIds, userId });
+  if (updatePost.error) return next(updatePost.error);
+  res.status(200).json(updatePost);
+};
+
 module.exports = {
   create,
   validatePost,
   getPosts,
+  update,
 };
