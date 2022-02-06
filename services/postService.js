@@ -1,4 +1,4 @@
-const { BlogPost, PostsCategory, Category } = require('../models');
+const { BlogPost, PostsCategory, Category, User } = require('../models');
 const postSchema = require('../schemas/postSchema');
 
 const validatePost = ({ title, content, categoryIds }) => {
@@ -33,8 +33,27 @@ const create = async ({ title, content, categoryIds, userId }) => {
   };
 };
 
+const getPosts = async (id) => {
+  if (id) {
+    const user = await BlogPost.findOne({
+      where: { id },
+      include: [
+        { model: User, as: 'user', attributes: { exclude: ['password'] } },
+        { model: Category, as: 'categories', through: { attributes: [] } },
+      ],
+    });
+    return user || { error: { code: 'notFound', message: 'Post does not exist' } };
+  }
+  return BlogPost.findAll({
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+};
+
 module.exports = {
   create,
   validatePost,
-  
+  getPosts,
 };

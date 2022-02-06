@@ -36,7 +36,7 @@ const create = async ({ displayName, email, password, image }) => {
   return { token };
 };
 
-const getUsers = async (id = null) => {
+const getUsers = async (id) => {
   if (id) {
     const user = await User.findByPk(id);
     return user || { error: { code: 'notFound', message: 'User does not exist' } };
