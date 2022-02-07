@@ -6,5 +6,6 @@ const userController = require('../controllers/userController');
 router.post('/', rescue(userController.validateUser), rescue(userController.create));
 router.get('/', rescue(userController.getUsers));
 router.get('/:id', rescue(userController.getUsers));
+router.delete('/me', rescue(userController.destroy));
 
 module.exports = router;

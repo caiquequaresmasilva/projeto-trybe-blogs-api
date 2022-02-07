@@ -55,10 +55,13 @@ const login = async ({ email, password }) => {
   return { token };
 };
 
+const destroy = async ({ userId }) => User.destroy({ where: { id: userId } });
+
 module.exports = {
   create,
   validateUser,
   login,
   authValidation,
   getUsers,
+  destroy,
 };

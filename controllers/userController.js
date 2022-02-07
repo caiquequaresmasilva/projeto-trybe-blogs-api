@@ -30,9 +30,16 @@ const getUsers = async (req, res, next) => {
   res.status(200).json(users);
 };
 
+const destroy = async (req, res) => {
+  const { userId } = req;
+  await userService.destroy({ userId });
+  res.status(204).end();
+};
+
 module.exports = {
   create,
   validateUser,
   login,
   getUsers,
+  destroy,
 };
