@@ -1,4 +1,4 @@
-const { BlogPost, PostsCategory, Category, User } = require('../models');
+const { BlogPost, PostsCategory, Category, User, Sequelize: { Op } } = require('../models');
 const postSchema = require('../schemas/postSchema');
 
 const validatePost = ({ title, content, categoryIds }) => {
@@ -78,10 +78,26 @@ const destroy = async ({ userId, id }) => {
   return BlogPost.destroy({ where: { id, userId } });
 };
 
+// Fonte: https://stackoverflow.com/questions/31258158/how-to-implement-search-feature-using-sequelizejs
+const search = async ({ q }) => {
+  if (!q) return getPosts();
+  const post = await BlogPost.findAll({
+    where: {
+      [Op.or]: [{ title: { [Op.like]: `%${q}%` } }, { content: { [Op.like]: `%${q}%` } }],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  return post;
+};
+
 module.exports = {
   create,
   validatePost,
   getPosts,
   update,
   destroy,
+  search,
 };
