@@ -6,5 +6,6 @@ router.post('/', rescue(postController.validatePost), rescue(postController.crea
 router.get('/', rescue(postController.getPosts));
 router.get('/:id', rescue(postController.getPosts));
 router.put('/:id', rescue(postController.validatePost), rescue(postController.update));
+router.delete('/:id', rescue(postController.destroy));
 
 module.exports = router;

@@ -67,9 +67,21 @@ const update = async ({ id, title, content, categoryIds, userId }) => {
   });
 };
 
+const destroy = async ({ userId, id }) => {
+  const post = await BlogPost.findOne({
+     where: { id }, attributes: ['userId'], 
+  });
+  if (!post) return { error: { code: 'notFound', message: 'Post does not exist' } };
+  if (userId !== post.dataValues.userId) { 
+    return { error: { code: 'unauthorized', message: 'Unauthorized user' } }; 
+  } 
+  return BlogPost.destroy({ where: { id, userId } });
+};
+
 module.exports = {
   create,
   validatePost,
   getPosts,
   update,
+  destroy,
 };
