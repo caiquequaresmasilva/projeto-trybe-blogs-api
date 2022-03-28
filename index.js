@@ -1,5 +1,8 @@
 const app = require('express')();
 const bodyParser = require('body-parser');
+require('dotenv/config');
+
+const { PORT } = process.env;
 
 const { errorHandler, authValidation } = require('./middlewares');
 
@@ -15,4 +18,4 @@ app.use('/post', postRoutes);
 
 app.use(errorHandler);
 
-app.listen(3000, () => console.log('ouvindo porta 3000!'));
+app.listen(PORT, () => console.log(`Ouvindo na porta ${PORT}`));
